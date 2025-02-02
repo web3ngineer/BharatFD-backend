@@ -39,9 +39,10 @@ const getFaqs = asyncHandler(async (req: Request, res: Response): Promise<any> =
 
 const createFaq = asyncHandler(async (req: Request, res: Response): Promise<any> => {
   const { question, answer } = req.body;
+  // console.log("createFaq -> req.body", req.body);
 
   if (!question || !answer) {
-    throw new ApiError(400, "Question and answer are required");
+    return res.status(400).json(new ApiResponse(400, null, "Question and answer are required"));
   }
 
   const faqData = new FaqModel({
@@ -85,6 +86,10 @@ const getFaqById = asyncHandler(async (req: Request, res: Response): Promise<any
   const { id } = req.params;
   const lang = (req.query.lang as string | undefined) || "en";
 
+  if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.status(400).json(new ApiResponse(400, null, "Invalid FAQ ID format"));
+  }
+
   const faq = await FaqModel.findById(id);
 
   if (!faq) {
@@ -104,8 +109,12 @@ const updateFaq = asyncHandler(async (req: Request, res: Response): Promise<any>
   const { id } = req.params;
   const { question, answer } = req.body;
 
+  if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.status(400).json(new ApiResponse(400, null, "Invalid FAQ ID format"));
+  }
+
   if (!question || !answer) {
-    throw new ApiError(400, "Question and answer are required");
+    return res.status(400).json(new ApiResponse(400, null, "Question and answer are required"));
   }
 
   const faq = await FaqModel.findById(id);
@@ -116,6 +125,39 @@ const updateFaq = asyncHandler(async (req: Request, res: Response): Promise<any>
 
   faq.question = question;
   faq.answer = answer;
+
+  const languages = ["hi", "bn"]; // Add more as needed
+
+  for (const lang of languages) {
+    try {
+      const translatedQuestion = await translateText(question, lang);
+      const translatedAnswer = await translateText(answer, lang);
+      
+      const translation = faq.translations.find((t: any) => t.lang === lang);
+      if (translation) {
+        translation.question = translatedQuestion;
+        translation.answer = translatedAnswer;
+      } else
+        faq.translations.push({
+          lang,
+          question: translatedQuestion,
+          answer: translatedAnswer,
+        });
+    } catch (error) {
+      console.error(`Translation failed for ${lang}, using original text.`);
+      // fallback to original text if translation fails
+      const translation = faq.translations.find((t: any) => t.lang === lang);
+      if (translation) {
+        translation.question = question;
+        translation.answer = answer;
+      } else
+        faq.translations.push({
+          lang,
+          question,
+          answer,
+        });
+    }
+  }
 
   await faq.save();
 
@@ -130,6 +172,10 @@ const deleteFaq = asyncHandler(async (req: Request, res: Response): Promise<any>
 
   const faq = await FaqModel.findByIdAndDelete(id);
 
+  if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.status(400).json(new ApiResponse(400, null, "Invalid FAQ ID format"));
+  }
+
   if (!faq) {
     return res.status(404).json(new ApiResponse(404, null, "FAQ not exists with given id"));
   }
@@ -141,9 +187,9 @@ const deleteFaq = asyncHandler(async (req: Request, res: Response): Promise<any>
 });
 
 const deleteAllFaqs = asyncHandler(async (req: Request, res: Response): Promise<any> => {
-  await FaqModel.deleteMany({});
+  const data = await FaqModel.deleteMany({});
   await redisClient.flushAll();
-  return res.status(200).json(new ApiResponse(200, null, "All FAQs deleted successfully"));
+  return res.status(200).json(new ApiResponse(200, data, "All FAQs deleted successfully"));
 });
 
 export { getFaqs, createFaq, getFaqById, updateFaq, deleteFaq, deleteAllFaqs };

@@ -10,6 +10,9 @@ app.use(
   })
 );
 
+app.use(express.json()); // Add this to parse JSON request bodies
+app.use(express.urlencoded({ extended: true })); // Optional: Parses URL-encoded data
+
 
 // Routes import
 import faqRoutes from "./routes/faq.routes";
