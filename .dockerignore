@@ -1,0 +1,24 @@
+# Node modules
+node_modules
+
+# TypeScript build output
+dist
+build
+
+# Logs
+*.log
+
+# Environment file (if you want to use environment variables directly in Docker Compose)
+.env
+
+# Dockerfile and Docker Compose file (optional, only if you don't want them copied into the image)
+Dockerfile
+docker-compose.yml
+
+# git directory
+.git
+
+# IDE and editor files
+.vscode
+.idea
+*.swp

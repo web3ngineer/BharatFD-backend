@@ -24,6 +24,8 @@ tmp/
 .vscode/  
 .idea/  
 
+docker-compose.yml
+
 # Dependency lock files (if you use one package manager)  
 package-lock.json  
 yarn.lock  
