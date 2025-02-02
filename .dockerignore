@@ -9,7 +9,6 @@ build
 *.log
 
 # Environment file (if you want to use environment variables directly in Docker Compose)
-.env
 
 # Dockerfile and Docker Compose file (optional, only if you don't want them copied into the image)
 Dockerfile
