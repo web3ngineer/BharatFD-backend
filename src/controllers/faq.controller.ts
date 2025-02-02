@@ -10,6 +10,7 @@ const getFaqs = asyncHandler(async (req: Request, res: Response): Promise<any> =
   const lang = (req.query.lang as string | undefined) || "en";
   const cacheKey = `faqs:${lang}`;
 
+
   const cached = await redisClient.get(cacheKey);
   if (cached) {
     return res
@@ -19,8 +20,8 @@ const getFaqs = asyncHandler(async (req: Request, res: Response): Promise<any> =
 
   const faqs = await FaqModel.find();
 
-  if(!faqs){
-    throw new ApiError(400, "FAQs not found!" )
+  if (!faqs || faqs.length === 0) {
+    return res.status(400).json(new ApiResponse(400, null, "FAQs not found!"));
   }
 
   const response = faqs.map((faq) => ({
@@ -87,7 +88,7 @@ const getFaqById = asyncHandler(async (req: Request, res: Response): Promise<any
   const faq = await FaqModel.findById(id);
 
   if (!faq) {
-    throw new ApiError(404, "FAQ not found");
+    return res.status(404).json(new ApiResponse(404, null, "FAQ not exists with given id"));
   }
 
   const resData = {
@@ -99,4 +100,50 @@ const getFaqById = asyncHandler(async (req: Request, res: Response): Promise<any
   return res.status(200).json(new ApiResponse(200, resData, "Data fetched successfully"));
 });
 
-export { getFaqs, createFaq, getFaqById };
+const updateFaq = asyncHandler(async (req: Request, res: Response): Promise<any> => {
+  const { id } = req.params;
+  const { question, answer } = req.body;
+
+  if (!question || !answer) {
+    throw new ApiError(400, "Question and answer are required");
+  }
+
+  const faq = await FaqModel.findById(id);
+
+  if (!faq) {
+    return res.status(404).json(new ApiResponse(404, null, "FAQ not exists with given id"));
+  }
+
+  faq.question = question;
+  faq.answer = answer;
+
+  await faq.save();
+
+  // Clear FAQ cache to update the latest data
+  await redisClient.flushAll();
+
+  return res.status(200).json(new ApiResponse(200, faq, "Faq updated successfully"));
+});
+
+const deleteFaq = asyncHandler(async (req: Request, res: Response): Promise<any> => {
+  const { id } = req.params;
+
+  const faq = await FaqModel.findByIdAndDelete(id);
+
+  if (!faq) {
+    return res.status(404).json(new ApiResponse(404, null, "FAQ not exists with given id"));
+  }
+
+  // Clear FAQ cache to update the latest data
+  await redisClient.flushAll();
+
+  return res.status(200).json(new ApiResponse(200, faq, "Faq deleted successfully"));
+});
+
+const deleteAllFaqs = asyncHandler(async (req: Request, res: Response): Promise<any> => {
+  await FaqModel.deleteMany({});
+  await redisClient.flushAll();
+  return res.status(200).json(new ApiResponse(200, null, "All FAQs deleted successfully"));
+});
+
+export { getFaqs, createFaq, getFaqById, updateFaq, deleteFaq, deleteAllFaqs };
