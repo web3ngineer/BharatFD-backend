@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  # Express.js application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: express-app
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - CORS_ORIGIN=*
+      - MONGODB_URL=
+      - REDIS_HOST=
+      - REDIS_PORT=
+      - REDIS_USERNAME=
+      - REDIS_PASSWORD=
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    external: true
