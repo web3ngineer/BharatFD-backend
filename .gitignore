@@ -12,7 +12,6 @@ yarn-error.log*
 .env  
 
 # Build files  
-dist/  
 build/  
 
 # Temporary files  
