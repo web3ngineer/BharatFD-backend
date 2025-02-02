@@ -80,4 +80,23 @@ const createFaq = asyncHandler(async (req: Request, res: Response): Promise<any>
   return res.status(201).json(new ApiResponse(201, faq, "Faq created successfully"));
 });
 
-export { getFaqs, createFaq };
+const getFaqById = asyncHandler(async (req: Request, res: Response): Promise<any> => {
+  const { id } = req.params;
+  const lang = (req.query.lang as string | undefined) || "en";
+
+  const faq = await FaqModel.findById(id);
+
+  if (!faq) {
+    throw new ApiError(404, "FAQ not found");
+  }
+
+  const resData = {
+    id: faq._id,
+    question: lang === "en" ? faq.question : faq.getTranslatedQuestion(lang),
+    answer: lang === "en" ? faq.answer : faq.getTranslatedAnswer(lang),
+  };
+
+  return res.status(200).json(new ApiResponse(200, resData, "Data fetched successfully"));
+});
+
+export { getFaqs, createFaq, getFaqById };
