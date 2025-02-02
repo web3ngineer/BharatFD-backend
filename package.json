@@ -1,7 +1,8 @@
 {
-  "name": "backend-faq-express",
+  "name": "bharatfd-backend",
   "version": "1.0.0",
-  "description": "FAQ Management System with dynamic multilanguage support",
+  "description": "A modern Express.js REST API built with TypeScript, MongoDB, and Redis.",
+  "license": "MIT",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --watch src/**/*.ts --exec ts-node src/index.ts",

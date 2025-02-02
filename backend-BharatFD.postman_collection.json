@@ -1,0 +1,251 @@
+{
+	"info": {
+		"_postman_id": "735bab8a-8cf2-4cc9-9512-5bec0d9c6d98",
+		"name": "backend-BharatFD",
+		"description": "This is the api documentation for the backend project FAQ System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33610151"
+	},
+	"item": [
+		{
+			"name": "createFAQ",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"question\":\"How old are you\",\r\n    \"answer\":\"Im 22y old\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{bharatFD_Url}}/faq",
+					"host": [
+						"{{bharatFD_Url}}"
+					],
+					"path": [
+						"faq"
+					]
+				},
+				"description": "`Response:`\n\n{  \n\"status\": 201,  \n\"message\": \"Faq created successfully\",  \n\"data\": {  \n\"question\": \"How old are you\",  \n\"answer\": \"Im 22y old\",  \n\"translations\": \\[  \n{  \n\"lang\": \"hi\",  \n\"question\": \"आपकी आयु कितनी है\",  \n\"answer\": \"Im 22y पुराना\",  \n\"_id\": \"679f34ee1782612293430f99\"  \n},  \n{  \n\"lang\": \"bn\",  \n\"question\": \"তোমার বয়স কত?\",  \n\"answer\": \"আমি 22 বছর বয়সী\",  \n\"_id\": \"679f34ef1782612293430f9a\"  \n}  \n\\],  \n\"_id\": \"679f34ed1782612293430f98\",  \n\"__v\": 0  \n},  \n\"success\": true  \n}"
+			},
+			"response": []
+		},
+		{
+			"name": "getFAQs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{bharatFD_Url}}/faq",
+					"host": [
+						"{{bharatFD_Url}}"
+					],
+					"path": [
+						"faq"
+					]
+				},
+				"description": "Response:\n\n{  \n\"status\": 200,  \n\"message\": \"Data fetched from database\",  \n\"data\": \\[  \n{  \n\"id\": \"679f34bf1782612293430f8a\",  \n\"question\": \"Who the President of India?\",  \n\"answer\": \"Ms. Droupadi Murmu\"  \n},  \n{  \n\"id\": \"679f34d71782612293430f91\",  \n\"question\": \"How are you\",  \n\"answer\": \"Im Fine\"  \n},  \n{  \n\"id\": \"679f34ed1782612293430f98\",  \n\"question\": \"How old are you\",  \n\"answer\": \"Im 22y old\"  \n}  \n\\],  \n\"success\": true  \n}"
+			},
+			"response": []
+		},
+		{
+			"name": "getFAQs Hindi",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{bharatFD_Url}}/faq?lang=hi",
+					"host": [
+						"{{bharatFD_Url}}"
+					],
+					"path": [
+						"faq"
+					],
+					"query": [
+						{
+							"key": "lang",
+							"value": "hi"
+						}
+					]
+				},
+				"description": "Response:\n\n{  \n\"status\": 200,  \n\"message\": \"Data fetched from database\",  \n\"data\": \\[  \n{  \n\"id\": \"679f34bf1782612293430f8a\",  \n\"question\": \"भारत का राष्ट्रपति कौन है?\",  \n\"answer\": \"एमएस। द्रौपदी मुरमू\"  \n},  \n{  \n\"id\": \"679f34d71782612293430f91\",  \n\"question\": \"आप कैसे हैं?\",  \n\"answer\": \"मैं ठीक हूँ\"  \n},  \n{  \n\"id\": \"679f34ed1782612293430f98\",  \n\"question\": \"आपकी आयु कितनी है\",  \n\"answer\": \"Im 22y पुराना\"  \n}  \n\\],  \n\"success\": true  \n}"
+			},
+			"response": []
+		},
+		{
+			"name": "getFAQs Bengali",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{bharatFD_Url}}/faq?lang=bn",
+					"host": [
+						"{{bharatFD_Url}}"
+					],
+					"path": [
+						"faq"
+					],
+					"query": [
+						{
+							"key": "lang",
+							"value": "bn"
+						}
+					]
+				},
+				"description": "Response:\n\n{  \n\"status\": 200,  \n\"message\": \"Data fetched from database\",  \n\"data\": \\[  \n{  \n\"id\": \"679f34bf1782612293430f8a\",  \n\"question\": \"ভারতের রাষ্ট্রপতি কে?\",  \n\"answer\": \"এমএস। ড্রুপাদি মুরমু\"  \n},  \n{  \n\"id\": \"679f34d71782612293430f91\",  \n\"question\": \"তুমি কেমন আছ\",  \n\"answer\": \"আমি ভাল আছি\"  \n},  \n{  \n\"id\": \"679f34ed1782612293430f98\",  \n\"question\": \"তোমার বয়স কত?\",  \n\"answer\": \"আমি 22 বছর বয়সী\"  \n}  \n\\],  \n\"success\": true  \n}"
+			},
+			"response": []
+		},
+		{
+			"name": "getByID",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{bharatFD_Url}}/faq/{{id}}",
+					"host": [
+						"{{bharatFD_Url}}"
+					],
+					"path": [
+						"faq",
+						"{{id}}"
+					]
+				},
+				"description": "Response:\n\n{  \n\"status\": 200,  \n\"message\": \"Data fetched successfully\",  \n\"data\": {  \n\"id\": \"679f34ed1782612293430f98\",  \n\"question\": \"How old are you\",  \n\"answer\": \"Im 22y old\"  \n},  \n\"success\": true  \n}"
+			},
+			"response": []
+		},
+		{
+			"name": "getByID Hindi",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{bharatFD_Url}}/faq/{{id}}?lang=hi",
+					"host": [
+						"{{bharatFD_Url}}"
+					],
+					"path": [
+						"faq",
+						"{{id}}"
+					],
+					"query": [
+						{
+							"key": "lang",
+							"value": "hi"
+						}
+					]
+				},
+				"description": "Response:\n\n{  \n\"status\": 200,  \n\"message\": \"Data fetched successfully\",  \n\"data\": {  \n\"id\": \"679f34ed1782612293430f98\",  \n\"question\": \"आपकी आयु कितनी है\",  \n\"answer\": \"Im 22y पुराना\"  \n},  \n\"success\": true  \n}"
+			},
+			"response": []
+		},
+		{
+			"name": "getByID Bengali",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{bharatFD_Url}}/faq/{{id}}?lang=bn",
+					"host": [
+						"{{bharatFD_Url}}"
+					],
+					"path": [
+						"faq",
+						"{{id}}"
+					],
+					"query": [
+						{
+							"key": "lang",
+							"value": "bn"
+						}
+					]
+				},
+				"description": "Response:\n\n{  \n\"status\": 200,  \n\"message\": \"Data fetched successfully\",  \n\"data\": {  \n\"id\": \"679f34ed1782612293430f98\",  \n\"question\": \"তোমার বয়স কত?\",  \n\"answer\": \"আমি 22 বছর বয়সী\"  \n},  \n\"success\": true  \n}"
+			},
+			"response": []
+		},
+		{
+			"name": "updateFAQ",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"question\":\"How was your day\",\r\n    \"answer\":\"Awesome\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{bharatFD_Url}}/faq/{{id}}",
+					"host": [
+						"{{bharatFD_Url}}"
+					],
+					"path": [
+						"faq",
+						"{{id}}"
+					]
+				},
+				"description": "Response:\n\n{  \n\"status\": 200,  \n\"message\": \"Faq updated successfully\",  \n\"data\": {  \n\"_id\": \"679f34ed1782612293430f98\",  \n\"question\": \"How was your day\",  \n\"answer\": \"Awesome\",  \n\"translations\": \\[  \n{  \n\"lang\": \"hi\",  \n\"question\": \"आपका दिन कैसा रहा\",  \n\"answer\": \"बहुत बढ़िया\",  \n\"_id\": \"679f34ee1782612293430f99\"  \n},  \n{  \n\"lang\": \"bn\",  \n\"question\": \"তোমার দিন কেমন ছিল\",  \n\"answer\": \"দুর্দান্ত\",  \n\"_id\": \"679f34ef1782612293430f9a\"  \n}  \n\\],  \n\"__v\": 0  \n},  \n\"success\": true  \n}"
+			},
+			"response": []
+		},
+		{
+			"name": "deleteFAQByID",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{bharatFD_Url}}/faq/{{id}}",
+					"host": [
+						"{{bharatFD_Url}}"
+					],
+					"path": [
+						"faq",
+						"{{id}}"
+					]
+				},
+				"description": "Response:\n\n{  \n\"status\": 200,  \n\"message\": \"Faq deleted successfully\",  \n\"data\": {  \n\"_id\": \"679f34ed1782612293430f98\",  \n\"question\": \"How was your day\",  \n\"answer\": \"Awesome\",  \n\"translations\": \\[  \n{  \n\"lang\": \"hi\",  \n\"question\": \"आपका दिन कैसा रहा\",  \n\"answer\": \"बहुत बढ़िया\",  \n\"_id\": \"679f34ee1782612293430f99\"  \n},  \n{  \n\"lang\": \"bn\",  \n\"question\": \"তোমার দিন কেমন ছিল\",  \n\"answer\": \"দুর্দান্ত\",  \n\"_id\": \"679f34ef1782612293430f9a\"  \n}  \n\\],  \n\"__v\": 0  \n},  \n\"success\": true  \n}"
+			},
+			"response": []
+		},
+		{
+			"name": "DANGER: deleteAll_FAQs",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{bharatFD_Url}}/faq/deleteAll",
+					"host": [
+						"{{bharatFD_Url}}"
+					],
+					"path": [
+						"faq",
+						"deleteAll"
+					]
+				},
+				"description": "Response:"
+			},
+			"response": []
+		}
+	]
+}
