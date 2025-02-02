@@ -93,7 +93,7 @@ const getFaqById = asyncHandler(async (req: Request, res: Response): Promise<any
   const faq = await FaqModel.findById(id);
 
   if (!faq) {
-    return res.status(404).json(new ApiResponse(404, null, "FAQ not exists with given id"));
+    return res.status(400).json(new ApiResponse(400, null, "FAQ not exists with given id"));
   }
 
   const resData = {
@@ -120,7 +120,7 @@ const updateFaq = asyncHandler(async (req: Request, res: Response): Promise<any>
   const faq = await FaqModel.findById(id);
 
   if (!faq) {
-    return res.status(404).json(new ApiResponse(404, null, "FAQ not exists with given id"));
+    return res.status(400).json(new ApiResponse(400, null, "FAQ not exists with given id"));
   }
 
   faq.question = question;
@@ -177,7 +177,7 @@ const deleteFaq = asyncHandler(async (req: Request, res: Response): Promise<any>
   }
 
   if (!faq) {
-    return res.status(404).json(new ApiResponse(404, null, "FAQ not exists with given id"));
+    return res.status(400).json(new ApiResponse(400, null, "FAQ not exists with given id"));
   }
 
   // Clear FAQ cache to update the latest data
